@@ -5,7 +5,7 @@ import { gapi, loadAuth2, loadAuth2WithProps, loadClientAuth2 } from 'gapi-scrip
 import { GoogleLogin, GoogleLogout } from 'react-google-login';
 
 function App() {
-  const [ user, setUser ] = useState({});
+  const [ user, setUser ] = useState(null);
 
   function handleCallbackResponse(response) {
     console.log(response);
@@ -17,7 +17,7 @@ function App() {
 
   function handleSignOut(response) {
     console.log(response);
-    setUser({});
+    setUser(null);
     document.getElementById("signInDiv").hidden = true;
   }
 
@@ -44,14 +44,22 @@ function App() {
 
   return (
     <div className="App">
-
+      <h1 className='name'> Google Sign In App</h1>
       <div id="signInDiv">
       {
-        user && 
-        <div>
-          <img src={user.imageUrl}></img>
-          <h2>{user.name}</h2>
-          <h3>{user.email}</h3>
+         user !== null && 
+        <div className="flex">
+            <br></br>
+            
+              <img src={user.imageUrl}></img>
+              <h2>{user.name}</h2>
+              <h3>{user.email}</h3>
+   
+          <GoogleLogout
+            clientId="576210486221-o3s6eut8r16q5oql11m6t9ibclhk9a3q.apps.googleusercontent.com"
+            buttonText="Logout"
+            onLogoutSuccess={handleSignOut}
+          />
         </div>
       }
       </div>
@@ -63,11 +71,7 @@ function App() {
         onFailure={responseGoogle}
         cookiePolicy={'single_host_origin'}
       />
-      <GoogleLogout
-        clientId="576210486221-o3s6eut8r16q5oql11m6t9ibclhk9a3q.apps.googleusercontent.com"
-        buttonText="Logout"
-        onLogoutSuccess={handleSignOut}
-      />
+     
     </div>
 
    
